@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstdio>
+#include <climits>
+#include <algorithm>
 using namespace std;
 
 struct treeNode{
@@ -8,8 +10,14 @@ struct treeNode{
     struct treeNode* right;
 };
 
-int maxLength(treeNode* root){
 
+int res = INT_MIN;
+int maxLength(treeNode* root){
+    if(root == NULL) return 0;
+    int left = maxLength(root->left);
+    int right = maxLength(root->right);
+    res = max(res, left+right+root->val);
+    return max(left, right)+ root->val;
 }
 
 treeNode* getNewNode(int data){
@@ -31,17 +39,18 @@ treeNode* insertNode(int array[], int len, int index){
 void preOrder(treeNode* root){
     if(root == NULL)
         return;
-    printf("%d", root->val);
+    printf("%d\n", root->val);
     preOrder(root->left);
     preOrder(root->right);
 }
 
 int main(){
     treeNode* root = NULL;
-    int arr[] = {1, 2, 3, 4};
-    root = insertNode(arr, 4, 0);
+    int arr[] = {-10,9,20,-1,-1,15,7};
+    root = insertNode(arr, 7, 0);
     preOrder(root);
-    // int res = maxLength()
+    maxLength(root);
+    printf("%d\n", res);
 
     return 0;
 }
