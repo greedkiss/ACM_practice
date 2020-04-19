@@ -2,48 +2,43 @@
 
 using namespace std;
 
-struct treeNode{
+struct tree{
     int value;
-    struct treeNode* left;
-    struct treeNode* right;
+    struct tree* left;
+    struct tree* right;
 };
-
-treeNode * pre, *first, *second;
-
-void recover(treeNode* root){
-    if(root == NULL) return;
+tree* pre,* first, *second;
+int recover(tree* root){
     recover(root->left);
     if(pre && pre->value > root->value){
-        if(first == NULL)
-            first = pre;
+        if(!first) first = pre;
         second = root;
     }
     pre = root;
-    recover(root->right);
 }
 
-treeNode* getNew(int data){
-    treeNode* node = new treeNode();
+tree* getNew(int data){
+    tree* node = new tree();
     node->value = data;
     return node;
 }
 
-treeNode* insertNode(int array[], int len, int index){
-    treeNode* node = NULL;
-    if(index < len && array[index] != -1){
+tree* instertNode(int len, int array[], int index){
+    tree* node = NULL;
+    if(index < len && *(array + index) != -1 ){
         node = getNew(array[index]);
-        node->left = insertNode(array, len, index*2+1);
-        node->right = insertNode(array, len, index*2+2);
+        node->left = instertNode(len, array, 2*index+1);
+        node->right = instertNode(len, array, 2*index+2);
     }
     return node;
 }
 
-
 int main(){
-    int array[] = {1, 3, -1, -1, 2};
-    treeNode* root = NULL;
-    root = insertNode(array, 5, 0);
-    recover(root);
-    printf("%d,%d",first->value, second->value);
+    tree* node = NULL;
+    int arr[] = {1, 3, -1, -1, 2};
+    node = instertNode(4, arr, 0);
+
+    recover(node);
+
     return 0;
 }
