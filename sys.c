@@ -8,6 +8,7 @@ void exec(unsigned long long * rsp){
     // printf("%p", rsp);
     *rsp = (unsigned long long*)(&print);
 
+
 }
 
 void sys_call(){
